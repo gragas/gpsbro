@@ -57,6 +57,9 @@ class GeoNetMark:
             return other.code == self.code and other.mark_type == self.mark_type and other.network == self.network
         return False
 
+    def __hash__(self):
+        return hash("{0} {1} {2}".format(self.code, self.mark_type, self.network))
+
     def __str__(self):
         ## This method allows for easy printing of GeoNetMarks.
         #  To use it, simply call print(some_geonet_mark)
