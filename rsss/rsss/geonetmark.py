@@ -24,6 +24,23 @@ class GeoNetMark:
         self.code = code
         self.name = name
         self.lat = lat
+        assert(type(self.lat) == float)
         self.lon = lon
+        assert(type(self.lon) == float)
         self.open_date = open_date
         self.network = network
+
+    def __str__(self):
+        string = "GeoNetMark(\n\tmark_type={0},\n\tstatus={1},\n\tcode={2}," + \
+                 "\n\tname={3},\n\tlat={4},\n\tlon={5},\n\topen_date={6}," + \
+                 "\n\tnetwork{7}"
+        return string.format(
+            self.mark_type,
+            self.status,
+            self.code,
+            self.name,
+            self.lat,
+            self.lon,
+            self.open_date,
+            self.network,
+        )
