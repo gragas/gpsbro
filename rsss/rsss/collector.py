@@ -5,16 +5,22 @@ from rsss.geonetmark import GeoNetMark
 
 class Collector:
 
+    
+
     DEFAULT_GEONET_MARK_START_DATE = "1900-01-01" # YYYY-MM-DD
     DEFAULT_GEONET_MARK_END_DATE   = "2100-12-31"
+    DEFAULT_GEONET_MARK_LAT_BOUNDS = (-90.0, 90.0)
+    DEFAULT_GEONET_MARK_LON_BOUNDS = (-180.0, 180.0)
 
     @staticmethod
-    def get_geonet_marks(mark_type, status, start_date=None, end_date=None):
+    def get_geonet_marks(mark_type, status, start_date=None, end_date=None, lat_bounds=None, lon_bounds=None):
         ## GeoNet Website: http://geonet.org.nz/
         
         start_date = start_date if start_date is not None else Collector.DEFAULT_GEONET_MARK_START_DATE
-        end_date = end_date if end_date is not None else Collector.DEFAULT_GEONET_MARK_END_DATE
-
+        end_date   = end_date if end_date is not None else Collector.DEFAULT_GEONET_MARK_END_DATE
+        lat_bounds = lat_bounds if lat_bounds is not None else Collector.DEFAULT_GEONET_MARK_LAT_BOUNDS
+        lon_bounds = lon_bounds if lon_bounds is not None else Collector.DEFAULT_GEONET_MARK_LON_BOUNDS
+        
         payload = {
             "type": mark_type,
             "status": status,
@@ -59,4 +65,7 @@ class Collector:
             assert(open_date is not None)
             assert(network is not None)
             geonet_marks.append(GeoNetMark(mark_type, status, code, name, lat, lon, open_date, network))
+
+        geonet_marks = [mark for mark in geonet_marks if mark.within(lat_bounds, lon_bounds)]
+        
         return geonet_marks
