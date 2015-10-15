@@ -1,14 +1,34 @@
+import datetime
 import requests
+import urllib.request
 from xml.etree import ElementTree
 
 from rsss.geonetmark import GeoNetMark
 
 class Collector:
 
-    
+    DEFAULT_GEONET_RINEX_LAT_BOUNDS = (-90.0, 90.0)
+    DEFAULT_GEONET_RINEX_LON_BOUNDS = (-180.0, 180.0)
 
-    DEFAULT_GEONET_MARK_START_DATE = "1900-01-01" # YYYY-MM-DD
-    DEFAULT_GEONET_MARK_END_DATE   = "2100-12-31"
+    @staticmethod
+    def get_geonet_rinex(start_date, end_date, lat_bounds=None, lon_bounds=None):
+
+        lat_bounds = lat_bounds if lat_bounds is not None else Collector.DEFAULT_GEONET_RINEX_LAT_BOUNDS
+        lon_bounds = lon_bounds if lon_bounds is not None else Collector.DEFAULT_GEONET_RINEX_LON_BOUNDS
+
+        start_date_url = start_date.strftime("%Y/") + str(start_date.timetuple().tm_yday) + "/"
+        
+        URL = "ftp://ftp.geonet.org.nz/gps/rinex/"
+        with urllib.request.urlopen(URL + start_date_url) as response:
+            data = response.read().decode("utf-8")
+            for line in data.split("\n"):
+                string = line.strip().split()[-1][:4]
+                print(string)
+        # INCOMPLETE
+        
+
+    DEFAULT_GEONET_MARK_START_DATE = datetime.date(1900, 1, 1) # YYYY-MM-DD
+    DEFAULT_GEONET_MARK_END_DATE   = datetime.date(2100, 12, 31)
     DEFAULT_GEONET_MARK_LAT_BOUNDS = (-90.0, 90.0)
     DEFAULT_GEONET_MARK_LON_BOUNDS = (-180.0, 180.0)
 
@@ -24,8 +44,8 @@ class Collector:
         payload = {
             "type": mark_type,
             "status": status,
-            "startDate": start_date,
-            "endDate": end_date,
+            "startDate": start_date.strftime("%Y-%m-%d"),
+            "endDate": end_date.strftime("%Y-%m-%d"),
         }
         ## by ommitting the outputFormat argument, the output format
         # will be XML

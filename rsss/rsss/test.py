@@ -1,7 +1,13 @@
+import datetime
+
 from rsss.geonetmark import GeoNetMark
 from rsss.collector import Collector
 
 def main():
+
+    Collector.get_geonet_rinex(datetime.date(2015, 10, 12), datetime.date(2015, 10, 12))
+    return
+
     geonet_marks1 = Collector.get_geonet_marks("tsunami", "operational", lon_bounds=(-170, -180))
     print("geonet_marks1 ({0}):\n".format(len(geonet_marks1)))
     for mark in geonet_marks1:
