@@ -1,7 +1,7 @@
 import datetime
 import requests
 import sys
-import urllib.request
+import urllib
 from xml.etree import ElementTree
 
 from rsss.geonetmark import GeoNetMark
@@ -16,17 +16,17 @@ class Collector:
         date_url = date.strftime("%Y/") + str(date.timetuple().tm_yday) + "/"
         URL = "ftp://ftp.geonet.org.nz/gps/rinex/"
         URLs = list()
-        with urllib.request.urlopen(URL + date_url) as response:
-            data = response.read().decode("utf-8")
-            Z = None
-            qc = None
-            for indx, line in enumerate(data.split("\n")):
-                if line.strip().split():
-                    if indx % 2 == 0:
-                        Z = line.strip().split()[-1]
-                    else:
-                        qc = line.strip().split()[-1]
-                        URLs.append((URL + date_url + Z, URL + date_url + qc))
+        sock = urllib.urlopen(URL + date_url)
+        data = sock.read()
+        Z = None
+        qc = None
+        for indx, line in enumerate(data.split("\n")):
+            if line.strip().split():
+                if indx % 2 == 0:
+                    Z = line.strip().split()[-1]
+                else:
+                    qc = line.strip().split()[-1]
+                    URLs.append((URL + date_url + Z, URL + date_url + qc))
         return URLs
 
     @staticmethod
