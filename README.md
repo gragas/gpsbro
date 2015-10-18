@@ -20,13 +20,13 @@ If you're using Python 2.x, run the following commands:
 
 ```
 git clone https://github.com/gragas/RSSS-toolkit
-cd RSSS-toolkit/rsss2/
+cd RSSS-toolkit/rsss2/ # notice the 2
 sudo python setup.py develop
 # To be explicit about installing RSSS-toolkit to
 # Python 2 instead of 3, run "sudo python2 setup.py develop"
 ```
 
-If the installation failed, or doesn't work correctly, run the following command instead:
+If the installation failed, or doesn't work correctly, run the following command:
 
 ```
 # After you've nagivated back to RSSS-toolkit/rsss2/,
@@ -39,7 +39,7 @@ Run these commands:
 
 ```
 git clone https://github.com/gragas/RSSS-toolkit
-cd RSSS-toolkit/rsss2/
+cd RSSS-toolkit/rsss/
 sudo python setup.py develop
 # To be explicit about installing RSSS-toolkit to
 # Python 3 instead of 2, run "sudo python3 setup.py develop"
@@ -57,6 +57,7 @@ sudo python setup.py install
 It's easy to get GeoNet rinex URLs with RSSS-toolkit:
 
 ```
+    # import datetime
     URLs = Collector.get_geonet_rinex_URLs(datetime.date(2015, 10, 12))
     Z_files = [Z for Z, qc in URLs]   # list of .Z URLs
     qc_files = [qc for Z, qc in URLs] # list of .qc URLs
