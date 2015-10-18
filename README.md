@@ -58,6 +58,7 @@ It's easy to get GeoNet rinex URLs with RSSS-toolkit:
 
 ```
     # import datetime
+    from rsss.collector import Collector
     URLs = Collector.get_geonet_rinex_URLs(datetime.date(2015, 10, 12))
     Z_files = [Z for Z, qc in URLs]   # list of .Z URLs
     qc_files = [qc for Z, qc in URLs] # list of .qc URLs
