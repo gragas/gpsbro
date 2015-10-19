@@ -59,9 +59,21 @@ It's easy to get GeoNet rinex URLs with RSSS-toolkit:
 ```
     # import datetime
     from rsss.collector import Collector
-    URLs = Collector.get_geonet_rinex_URLs(datetime.date(2015, 10, 12))
+    URLs = Collector.get_geonet_rinex_URLs_on(datetime.date(2015, 10, 12))
     Z_files = [Z for Z, qc in URLs]   # list of .Z URLs
     qc_files = [qc for Z, qc in URLs] # list of .qc URLs
+```
+
+Or, grab all the URLs within a range of dates:
+
+```
+    start_date = datetime.date(2015, 10, 12)
+    end_date   = datetime.date(2015, 10, 14)
+    dates = Collector.get_geonet_rinex_URLs_within(start_date, end_date) # 3 dates
+    for date in dates:
+        Z_files = [Z for Z, qc in dates[date]]
+        qc_files = [qc for Z, qc in dates[date]]
+        print("Found {0} .Z files on {1}.".format(len(Z_files), date.strftime("%Y-%m-%d")))
 ```
 
 # License and Redistribution
