@@ -8,11 +8,18 @@ from rsss.geonetmark import GeoNetMark
 
 class Collector:
 
-    DEFAULT_GEONET_RINEX_LAT_BOUNDS = (-90.0, 90.0)
-    DEFAULT_GEONET_RINEX_LON_BOUNDS = (-180.0, 180.0)
+    @staticmethod
+    def get_geonet_rinex_URLs_within(start_date, end_date):
+        dates = dict()
+        for date in [end_date - datetime.timedelta(days=x) for x in range((end_date - start_date).days + 1)]:
+            try:
+                dates[date] = Collector.get_geonet_rinex_URLs_on(date)
+            except:
+                print("Could not find URL for {0}".format(date.strftime("%Y-%m-%d")))
+        return dates
 
     @staticmethod
-    def get_geonet_rinex_URLs(date):
+    def get_geonet_rinex_URLs_on(date):
         date_url = date.strftime("%Y/") + str(date.timetuple().tm_yday) + "/"
         URL = "ftp://ftp.geonet.org.nz/gps/rinex/"
         URLs = list()
@@ -28,6 +35,9 @@ class Collector:
                     qc = line.strip().split()[-1]
                     URLs.append((URL + date_url + Z, URL + date_url + qc))
         return URLs
+
+    DEFAULT_GEONET_RINEX_LAT_BOUNDS = (-90.0, 90.0)
+    DEFAULT_GEONET_RINEX_LON_BOUNDS = (-180.0, 180.0)
 
     @staticmethod
     def get_geonet_rinex(start_date, end_date, lat_bounds=None, lon_bounds=None):
