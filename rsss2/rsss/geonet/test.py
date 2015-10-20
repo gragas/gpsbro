@@ -1,41 +1,44 @@
 import datetime
 
-from rsss.geonetmark import GeoNetMark
-from rsss.collector import Collector
+import rsss.geonet.rinex
+import rsss.geonet.marks
 
 def main():
 
     ### Get GeoNet rinex URLs in a range of dates (inclusive) demonstration
 
-    start_date = datetime.date(2015, 10, 12)
-    end_date   = datetime.date(2015, 10, 14)
-    dates = Collector.get_geonet_rinex_URLs_within(start_date, end_date) # 3 dates
+    start_date = datetime.date(2015, 1, 12)
+    end_date   = datetime.date(2015, 1, 14)
+    dates = rsss.geonet.rinex.get_URLs_within(start_date, end_date) # 3 dates
     for date in dates:
-        Z_files = [Z for Z, qc in dates[date]]
-        qc_files = [qc for Z, qc in dates[date]]
-        print("Found {0} .Z files on {1}.".format(len(Z_files), date.strftime("%Y-%m-%d")))
-    return
+        mZ_files = [mZ for mZ, dZ, qc in dates[date]]
+        dZ_files = [dZ for mZ, dZ, qc in dates[date]]
+        qc_files = [qc for mZ, dZ, qc in dates[date]]
+        print("Found {0} *m.Z files on {1}.".format(len(mZ_files), date.strftime("%Y-%m-%d")))
+    #return
 
     ##########################################
 
     ### Get GeoNet rinex URLs on a specific date demonstration
 
-    URLs = Collector.get_geonet_rinex_URLs_on(datetime.date(2015, 11, 12))
-    Z_files = [Z for Z, qc in URLs]
-    qc_files = [qc for Z, qc in URLs]
-    print(Z_files)
+    d = datetime.date(2015, 10, 12)
+    URLs = rsss.geonet.rinex.get_URLs_on(d)
+    dZ_files = [dZ for mZ, dZ, qc in URLs]
+    mZ_files = [mZ for mZ, dZ, qc in URLs]
+    qc_files = [qc for mZ, dZ, qc in URLs]
+    print("Found {0} *d.Z files on {1}.".format(len(dZ_files), d.strftime("%Y-%m-%d")))
     return
 
     ###########################################
 
     ### Hashable and equivalence demonstration
 
-    geonet_marks1 = Collector.get_geonet_marks("tsunami", "operational", lon_bounds=(-170, -180))
+    geonet_marks1 = rsss.geonet.marks.get_geonet_marks("tsunami", "operational", lon_bounds=(-170, -180))
     print("geonet_marks1 ({0}):\n".format(len(geonet_marks1)))
     for mark in geonet_marks1:
         print(mark)
     print()
-    geonet_marks2 = Collector.get_geonet_marks("tsunami", "operational", lon_bounds=(175, 177))
+    geonet_marks2 = rsss.geonet.marks.get_geonet_marks("tsunami", "operational", lon_bounds=(175, 177))
     print("geonet_marks2 ({0}):\n".format(len(geonet_marks2)))
     for mark in geonet_marks2:
         print(mark)

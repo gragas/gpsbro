@@ -8,5 +8,9 @@ except ImportError:
 setup(name="rsss",
       author="Thomas D. Fischer",
       version="0.0.1",
-      py_modules=["rsss",],
+      py_modules=["rsss",
+                  "rsss.geonet",
+                  "rsss.geonet.rinex",
+                  "rsss.geonet.marks",
+                  "rsss.geonet.test",],
       )
