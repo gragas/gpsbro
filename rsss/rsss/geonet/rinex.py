@@ -21,11 +21,11 @@ def get_URLs_on(date):
             string = line.strip().split()[-1]
             if len(string) > 3:
                 if string[-3:] == "m.Z":
-                    mZ.append(string)
+                    mZ.append(URL + date_url + string)
                 elif string[-3:] == "d.Z":
-                    dZ.append(string)
+                    dZ.append(URL + date_url + string)
                 elif string[-3:] == ".qc":
-                    qc.append(string)
+                    qc.append(URL + date_url + string)
     maximum_len = max(len(mZ), len(dZ), len(qc))
     mZ.extend([None]*(maximum_len - len(mZ)))
     dZ.extend([None]*(maximum_len - len(dZ)))
