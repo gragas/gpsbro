@@ -12,6 +12,7 @@ def get_URLs_on(date):
     URL = "ftp://ftp.geonet.org.nz/gps/rinex/"
     sock = urllib.urlopen(URL + date_url)
     data = sock.read()
+    sock.close()
     mZ = list()
     dZ = list()
     qc = list()

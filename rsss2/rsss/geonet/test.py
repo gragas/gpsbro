@@ -8,14 +8,14 @@ def main():
     ### Get GeoNet rinex URLs in a range of dates (inclusive) demonstration
 
     start_date = datetime.date(2015, 1, 12)
-    end_date   = datetime.date(2015, 1, 14)
+    end_date   = datetime.date(2015, 3, 14)
     dates = rsss.geonet.rinex.get_URLs_within(start_date, end_date) # 3 dates
     for date in dates:
         mZ_files = [mZ for mZ, dZ, qc in dates[date]]
         dZ_files = [dZ for mZ, dZ, qc in dates[date]]
         qc_files = [qc for mZ, dZ, qc in dates[date]]
         print("Found {0} *m.Z files on {1}.".format(len(mZ_files), date.strftime("%Y-%m-%d")))
-    #return
+    return
 
     ##########################################
 
