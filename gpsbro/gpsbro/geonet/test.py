@@ -1,28 +1,28 @@
 import datetime
 
-import rsss.geonet.rinex
-import rsss.geonet.marks
+import gpsbro.geonet.rinex
+import gpsbro.geonet.marks
 
 def main():
 
     ### Get GeoNet rinex URLs in a range of dates (inclusive) demonstration
 
     start_date = datetime.date(2015, 1, 12)
-    end_date   = datetime.date(2015, 3, 14)
-    dates = rsss.geonet.rinex.get_URLs_within(start_date, end_date) # 3 dates
+    end_date   = datetime.date(2015, 1, 14)
+    dates = gpsbro.geonet.rinex.get_URLs_within(start_date, end_date) # 3 dates
     for date in dates:
         mZ_files = [mZ for mZ, dZ, qc in dates[date]]
         dZ_files = [dZ for mZ, dZ, qc in dates[date]]
         qc_files = [qc for mZ, dZ, qc in dates[date]]
         print("Found {0} *m.Z files on {1}.".format(len(mZ_files), date.strftime("%Y-%m-%d")))
-    return
+    #return
 
     ##########################################
 
     ### Get GeoNet rinex URLs on a specific date demonstration
 
     d = datetime.date(2015, 10, 12)
-    URLs = rsss.geonet.rinex.get_URLs_on(d)
+    URLs = gpsbro.geonet.rinex.get_URLs_on(d)
     dZ_files = [dZ for mZ, dZ, qc in URLs]
     mZ_files = [mZ for mZ, dZ, qc in URLs]
     qc_files = [qc for mZ, dZ, qc in URLs]
@@ -33,12 +33,12 @@ def main():
 
     ### Hashable and equivalence demonstration
 
-    geonet_marks1 = rsss.geonet.marks.get_geonet_marks("tsunami", "operational", lon_bounds=(-170, -180))
+    geonet_marks1 = gpsbro.geonet.marks.get_geonet_marks("tsunami", "operational", lon_bounds=(-170, -180))
     print("geonet_marks1 ({0}):\n".format(len(geonet_marks1)))
     for mark in geonet_marks1:
         print(mark)
     print()
-    geonet_marks2 = rsss.geonet.marks.get_geonet_marks("tsunami", "operational", lon_bounds=(175, 177))
+    geonet_marks2 = gpsbro.geonet.marks.get_geonet_marks("tsunami", "operational", lon_bounds=(175, 177))
     print("geonet_marks2 ({0}):\n".format(len(geonet_marks2)))
     for mark in geonet_marks2:
         print(mark)

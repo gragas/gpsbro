@@ -4,7 +4,7 @@ import sys
 import urllib
 from xml.etree import ElementTree
 
-from rsss.geonet.geonetmark import GeoNetMark
+from gpsbro.geonet.geonetmark import GeoNetMark
 
 DEFAULT_GEONET_MARK_START_DATE = datetime.date(1900, 1, 1) # YYYY-MM-DD
 DEFAULT_GEONET_MARK_END_DATE   = datetime.date(2100, 12, 31)
