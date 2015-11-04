@@ -54,15 +54,15 @@ sudo python setup.py install
 
 # Usage
 
-It's easy to get GeoNet rinex URLs with gpsbro:
+It's easy to get UNAVCO RINEX URLs with gpsbro:
 
 ```
-    # import datetime
-    import gpsbro.geonet.rinex
-    URLs = gpsbro.geonet.rinex.get_URLs_on(datetime.date(2015, 10, 12))
-    mZ_files = [mZ for mZ, dZ, qc in URLs]   # list of m.Z URLs
-    dZ_files = [dZ for mZ, dZ, qc in URLs]   # list of d.Z URLs
-    qc_files = [qc for mZ, dZ, qc in URLs]   # list of .qc URLs
+    import datetime
+    import gpsbro.unavco.rinex
+    URLs = gpsbro.unavco.rinex.get_URLs_on(
+    	 datetime.date(2015, 10, 12),
+	 mask=gpsbro.unavco.rinex.OBS # Get *d.Z files
+    )
 ```
 
 Or, grab all the rinex URLs within a range of dates:
@@ -70,12 +70,43 @@ Or, grab all the rinex URLs within a range of dates:
 ```
     start_date = datetime.date(2015, 10, 12)
     end_date   = datetime.date(2015, 10, 14)
-    dates = gpsbro.geonet.rinex.get_URLs_within(start_date, end_date) # 3 dates
-    for date in dates:
-        mZ_files = [mZ for mZ, dZ, qc in dates[date]]   # list of m.Z URLs
-        dZ_files = [dZ for mZ, dZ, qc in dates[date]]   # list of d.Z URLs
-        qc_files = [qc for mZ, dZ, qc in dates[date]]   # list of .qc URLs
+    dates = gpsbro.geonet.rinex.get_URLs_within(start_date, end_date)
+    for date in dates: # 12th, 13th, and 14th
+        mZ_files = [mZ for mZ, dZ, qc in dates[date]]   # list of *m.Z URLs
+        dZ_files = [dZ for mZ, dZ, qc in dates[date]]   # list of *d.Z URLs
+        qc_files = [qc for mZ, dZ, qc in dates[date]]   # list of *.qc URLs
         print("Found {0} d.Z files on {1}.".format(len(dZ_files), date.strftime("%Y-%m-%d")))
+```
+
+You probably know that there are many different types of RINEX files. You can use the `mask` keyword argument to get specific file types. Four constants are provided for use with the UNAVCO and GeoNet networks:
+
+```
+    MET # *m.Z --- Meteorological
+    NAV # *n.Z --- Navigational
+    OBS # *d.Z --- Observational
+    QC  # *.qc --- qc
+```
+
+You can form a mask by logical-anding these constants. Then, pass the mask to a function. For example,
+
+```
+    # Only get meteorological, navigational, and observational files. Don't get *.qc files.
+    mask = gpsbro.unavco.rinex.MET | gpsbro.unavco.rinex.NAV | gpsbro.unavco.rinex.NAV
+
+    start_date = datetime.date(2015, 10, 12)
+    end_date   = datetime.date(2015, 10, 14)
+    dates = gpsbro.unavco.rinex.get_URLs_within(start_date, end_date)
+    # - dates is a list of lists
+    # - each list contains URLs
+    # - the lists in dates are ordered alphabetically (as displayed above)
+    #    - Examples:
+    #       - if mask = MET | OBS then dates = [ MET_list, OBS_list ]
+    #       - if mask = NAV | QC  then dates = [ NAV_list, QC_list ]
+
+    for date in dates: # 12th, 13th, and 14th
+        mZ_files = [mZ for mZ, nZ, dZ in dates[date]]   # list of MET -- meteorological -- *m.Z URLs
+        nZ_files = [nZ for mZ, nZ, dZ in dates[date]]   # list of NAV -- navigational   -- *n.Z URLs
+        dZ_files = [dZ for mZ, nZ, dZ in dates[date]]   # list of OBS -- observational  -- *d.Z URLs
 ```
 
 # License and Redistribution
