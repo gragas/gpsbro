@@ -29,7 +29,7 @@ sudo python setup.py develop
 If the installation failed, or doesn't work correctly, run the following command:
 
 ```
-# After you've nagivated back to gpsbro/gpsbro2/,
+# After you've nagivated back to gpsbro/gpsbro/,
 sudo python setup.py install
 ```
 
