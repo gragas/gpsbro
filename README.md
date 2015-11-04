@@ -106,9 +106,9 @@ dates = gpsbro.unavco.rinex.get_URLs_within(start_date, end_date)
 #       - if mask = NAV | QC  then dates = [ NAV_list, QC_list ]
 
 for date in dates: # 12th, 13th, and 14th
-    mZ_files = [mZ for mZ, nZ, dZ in dates[date]]   # list of MET -- meteorological -- *m.Z URLs
-    nZ_files = [nZ for mZ, nZ, dZ in dates[date]]   # list of NAV -- navigational   -- *n.Z URLs
-    dZ_files = [dZ for mZ, nZ, dZ in dates[date]]   # list of OBS -- observational  -- *d.Z URLs
+    mZ_files = [mZ for mZ, nZ, dZ in dates[date]]   # list of meteorological -- *m.Z URLs
+    nZ_files = [nZ for mZ, nZ, dZ in dates[date]]   # list of navigational   -- *n.Z URLs
+    dZ_files = [dZ for mZ, nZ, dZ in dates[date]]   # list of observational  -- *d.Z URLs
 ```
 
 # License and Redistribution
