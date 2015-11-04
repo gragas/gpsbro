@@ -1,7 +1,4 @@
-import multiprocessing
 import datetime
-import time
-
 import requests
 import sys
 import urllib
@@ -20,27 +17,39 @@ def get_URLs_on(date, mask=None):
     while len(day_string) < 3:
         day_string = "0" + day_string
     date_url = date.strftime("%Y/") + day_string + "/"
-    URL = "ftp://ftp.geonet.org.nz/gps/rinex/"
+    BASE_URL = "ftp://data-out.unavco.org/pub/rinex/"
     mZ = list()
     nZ = list()
     dZ = list()
     qc = list()
-    sock = urllib.urlopen(URL + date_url)
-    data = sock.read()
-    sock.close()
-    for line in data.split("\n"):
-        if not line.strip().split():
-            continue
-        string = line.strip().split()[-1]
-        if len(string) > 3:
-            if string[-3:] == "m.Z":
-                mZ.append(URL + date_url + string)
-            elif string[-3:] == "n.Z":
-                nZ.append(URL + date_url + string)
-            elif string[-3:] == "d.Z":
-                dZ.append(URL + date_url + string)
-            elif string[-3:] == ".qc":
-                qc.append(URL + date_url + string)
+    directories = list()
+    if mask & MET:
+        directories.append("met/")
+    if mask & NAV:
+        directories.append("nav/")
+    if mask & OBS:
+        directories.append("obs/")
+    if mask & QC:
+        directories.append("qc/")
+    for d in directories:
+        URL = BASE_URL + d
+        sock = urllib.urlopen(URL + date_url)
+        data = sock.read()
+        sock.close()
+        for line in data.split("\n"):
+            if not line.strip().split():
+                continue
+            string = line.strip().split()[-1]
+            if len(string) > 3:
+                # hashtag robust
+                if string[-3:] == "m.Z":
+                    mZ.append(URL + date_url + string)
+                elif string[-3:] == "n.Z":
+                    nZ.append(URL + date_url + string)
+                elif string[-3:] == "d.Z":
+                    dZ.append(URL + date_url + string)
+                elif string[-3:] == ".qc":
+                    qc.append(URL + date_url + string)
     maximum_len = max(len(mZ), len(nZ), len(dZ), len(qc))
     mZ.extend([None]*(maximum_len - len(mZ)))
     nZ.extend([None]*(maximum_len - len(nZ)))
