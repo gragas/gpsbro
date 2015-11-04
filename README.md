@@ -97,7 +97,7 @@ mask = gpsbro.unavco.rinex.MET | gpsbro.unavco.rinex.NAV | gpsbro.unavco.rinex.N
 
 start_date = datetime.date(2015, 10, 12)
 end_date   = datetime.date(2015, 10, 14)
-dates = gpsbro.unavco.rinex.get_URLs_within(start_date, end_date)
+dates = gpsbro.unavco.rinex.get_URLs_within(start_date, end_date, mask)
 # - dates is a list of lists
 # - each list contains URLs
 # - the lists in dates are ordered alphabetically (as displayed above)
