@@ -9,7 +9,7 @@ def main():
 
     start_date = datetime.date(2015, 1, 12)
     end_date   = datetime.date(2015, 1, 14)
-    dates = gpsbro.geonet.rinex.get_URLs_within(start_date, end_date) # 3 dates
+    dates = gpsbro.geonet.rinex.get_URLs_within(start_date, end_date)
     for date in dates:
         mZ_files = [mZ for mZ, dZ, qc in dates[date]]
         dZ_files = [dZ for mZ, dZ, qc in dates[date]]
@@ -22,11 +22,10 @@ def main():
     ### Get GeoNet rinex URLs on a specific date demonstration
 
     d = datetime.date(2015, 10, 12)
-    URLs = gpsbro.geonet.rinex.get_URLs_on(d)
-    dZ_files = [dZ for mZ, dZ, qc in URLs]
-    mZ_files = [mZ for mZ, dZ, qc in URLs]
-    qc_files = [qc for mZ, dZ, qc in URLs]
-    print("Found {0} *d.Z files on {1}.".format(len(dZ_files), d.strftime("%Y-%m-%d")))
+    URLs = gpsbro.geonet.rinex.get_URLs_on(d, mask=gpsbro.geonet.rinex.OBS)
+    print("First 5 RINEX observation URLs on {0}:".format(date.strftime("%Y-%m-%d")))
+    for url in URLs[:5]:
+        print(url)
     return
 
     ###########################################
