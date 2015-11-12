@@ -123,9 +123,9 @@ dates = gpsbro.unavco.rinex.get_URLs_within(start_date, end_date, mask, sample_s
 # sample_size=35: randomly choose 35 days and only get URLs for those days
 
 for date in dates:
-    mZ_files = [mZ for mZ, nZ, dZ in dates[date]]   # list of meteorological -- *m.Z URLs
-    nZ_files = [nZ for mZ, nZ, dZ in dates[date]]   # list of navigational   -- *n.Z URLs
-    dZ_files = [dZ for mZ, nZ, dZ in dates[date]]   # list of observational  -- *d.Z URLs
+    mZ_files = [mZ for mZ, dZ, qc in dates[date]]   # list of meteorological -- *m.Z URLs
+    dZ_files = [dZ for mZ, dZ, qc in dates[date]]   # list of observational  -- *d.Z URLs
+    qc_files = [qc for mZ, dZ, qc in dates[date]]   # list of *.qc URLs
 ```
 
 # License and Redistribution
