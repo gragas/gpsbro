@@ -1,6 +1,8 @@
-import datetime
-import requests
 import sys
+import random
+import datetime
+
+import requests
 import urllib
 from xml.etree import ElementTree
 
@@ -87,10 +89,15 @@ def get_URLs_on(date, mask=None):
                     base[indx] = [e] + [qc[indx]]
     return base
 
-def get_URLs_within(start_date, end_date, mask=None):
+def get_URLs_within(start_date, end_date, mask=None, sample_size=None):
     mask = mask if mask is not None else DEFAULT_MASK
+    domain = [end_date - datetime.timedelta(days=x) for x in range((end_date - start_date).days + 1)]
+    if sample_size is not None:
+        assert(type(sample_size) is int)
+        assert(sample_size <= (end_date - start_date).days + 1)
+        domain = random.sample(domain, sample_size)
     dates = dict()
-    for date in [end_date - datetime.timedelta(days=x) for x in range((end_date - start_date).days + 1)]:
+    for date in domain:
         try:
             dates[date] = get_URLs_on(date, mask)
         except Exception as e:
