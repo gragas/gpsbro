@@ -11,8 +11,8 @@ def main():
 
     test_one_begin = time()
     start_date = datetime.date(2015, 1, 12)
-    end_date   = datetime.date(2015, 1, 14)
-    dates = gpsbro.unavco.rinex.get_URLs_within(start_date, end_date)
+    end_date   = datetime.date(2015, 2, 12)
+    dates = gpsbro.unavco.rinex.get_URLs_within(start_date, end_date, sample_size=5)
     for date in dates:
         mZ_files = [mZ for mZ, dZ, qc in dates[date]]
         dZ_files = [dZ for mZ, dZ, qc in dates[date]]
