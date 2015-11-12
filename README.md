@@ -111,6 +111,23 @@ for date in dates: # 12th, 13th, and 14th
     dZ_files = [dZ for mZ, nZ, dZ in dates[date]]   # list of observational  -- *d.Z URLs
 ```
 
+# Random Sampling
+
+It can take a long time to get hundreds of thousands of URLs. Random sampling and statistics can mitigate the need to get data every URL. To get a random sample of URLs within a certain range, just add the `sample_size` keyword argument to your `*.rinex.get_URLs_within` function call. For example:
+
+```
+start_date = datetime.date(2015, 10, 12)
+end_date   = datetime.date(2014, 10, 12)
+dates = gpsbro.unavco.rinex.get_URLs_within(start_date, end_date, mask, sample_size=35)
+
+# sample_size=35: randomly choose 35 days and only get URLs for those days
+
+for date in dates:
+    mZ_files = [mZ for mZ, nZ, dZ in dates[date]]   # list of meteorological -- *m.Z URLs
+    nZ_files = [nZ for mZ, nZ, dZ in dates[date]]   # list of navigational   -- *n.Z URLs
+    dZ_files = [dZ for mZ, nZ, dZ in dates[date]]   # list of observational  -- *d.Z URLs
+```
+
 # License and Redistribution
 
 This project is licensed under the MIT License. Feel free to contribute to or fork this project.
