@@ -128,6 +128,22 @@ for date in dates:
     qc_files = [qc for mZ, dZ, qc in dates[date]]   # list of *.qc URLs
 ```
 
+# Latitude/Longitude Bounding
+
+Latitude/Longitude bounding is not currenlty implemented for any network. However, certained zones have been cached for the UNAVCO network. The only zone that has been cached so far is the `HAWAII` zone. You can filter URLs to only include sites within this zone by setting the `zone` keyword argument to `"HAWAII"`. For example:
+
+```
+start_date = datetime.date(2015, 1, 12)
+end_date   = datetime.date(2015, 2, 12)
+dates = gpsbro.unavco.rinex.get_URLs_within(start_date, end_date, sample_size=5, sample_type="DAY", )#zone="HAWAII")
+for date in dates:
+    mZ_files = [mZ for mZ, dZ, qc in dates[date] if mZ is not None]
+    dZ_files = [dZ for mZ, dZ, qc in dates[date] if dZ is not None]
+    qc_files = [qc for mZ, dZ, qc in dates[date] if qc is not None]
+```
+
+Notice that not all dates have file of each type (mZ, dZ, and qc). If a certain date does not have a URL for a certain filetype, it will contain `None` in place of the URL. It may be useful to filter out such instances of `None` as shown in the example above.
+
 # License and Redistribution
 
 This project is licensed under the MIT License. Feel free to contribute to or fork this project.
