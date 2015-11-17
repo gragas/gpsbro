@@ -135,7 +135,7 @@ Latitude/Longitude bounding is not currenlty implemented for any network. Howeve
 ```
 start_date = datetime.date(2015, 1, 12)
 end_date   = datetime.date(2015, 2, 12)
-dates = gpsbro.unavco.rinex.get_URLs_within(start_date, end_date, sample_size=5, sample_type="DAY", )#zone="HAWAII")
+dates = gpsbro.unavco.rinex.get_URLs_within(start_date, end_date, zone="HAWAII")
 for date in dates:
     mZ_files = [mZ for mZ, dZ, qc in dates[date] if mZ is not None]
     dZ_files = [dZ for mZ, dZ, qc in dates[date] if dZ is not None]
