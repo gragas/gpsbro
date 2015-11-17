@@ -12,12 +12,12 @@ def main():
     test_one_begin = time()
     start_date = datetime.date(2015, 1, 12)
     end_date   = datetime.date(2015, 2, 12)
-    dates = gpsbro.unavco.rinex.get_URLs_within(start_date, end_date, sample_size=5)
+    dates = gpsbro.unavco.rinex.get_URLs_within(start_date, end_date, sample_size=5, sample_type="DAY", zone="HAWAII")
     for date in dates:
-        mZ_files = [mZ for mZ, dZ, qc in dates[date]]
-        dZ_files = [dZ for mZ, dZ, qc in dates[date]]
-        qc_files = [qc for mZ, dZ, qc in dates[date]]
-        print("Found {0} *m.Z files on {1}.".format(len(mZ_files), date.strftime("%Y-%m-%d")))
+        mZ_files = [mZ for mZ, dZ, qc in dates[date] if mZ is not None]
+        dZ_files = [dZ for mZ, dZ, qc in dates[date] if dZ is not None]
+        qc_files = [qc for mZ, dZ, qc in dates[date] if qc is not None]
+        print("Found {0} files on {1}.".format(len(mZ_files) + len(dZ_files) + len(qc_files), date.strftime("%Y-%m-%d")))
     test_one_end = time()
     print("Time elapsed: {} seconds".format(str(test_one_end - test_one_begin)))
     #return
