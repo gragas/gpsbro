@@ -72,11 +72,13 @@ start_date = datetime.date(2015, 10, 12)
 end_date   = datetime.date(2015, 10, 14)
 dates = gpsbro.geonet.rinex.get_URLs_within(start_date, end_date)
 for date in dates: # 12th, 13th, and 14th
-    mZ_files = [mZ for mZ, dZ, qc in dates[date]]   # list of *m.Z URLs
-    dZ_files = [dZ for mZ, dZ, qc in dates[date]]   # list of *d.Z URLs
-    qc_files = [qc for mZ, dZ, qc in dates[date]]   # list of *.qc URLs
+    mZ_files = [mZ for mZ, dZ, qc in dates[date] if mZ is not None] # list of *m.Z URLs
+    dZ_files = [dZ for mZ, dZ, qc in dates[date] if dZ is not None] # list of *d.Z URLs
+    qc_files = [qc for mZ, dZ, qc in dates[date] if qc is not None] # list of *.qc URLs
     print("Found {0} d.Z files on {1}.".format(len(dZ_files), date.strftime("%Y-%m-%d")))
 ```
+
+Notice that not all dates have file of each type (mZ, dZ, and qc). If a certain date does not have a URL for a certain filetype, it will contain `None` in place of the URL. It may be useful to filter out such instances of `None` as shown in the example above.
 
 # Masking
 
@@ -113,12 +115,12 @@ for date in dates: # 12th, 13th, and 14th
 
 # Random Sampling
 
-It can take a long time to get hundreds of thousands of URLs. Random sampling and statistics can mitigate the need to get data every URL. To get a random sample of URLs within a certain range, just add the `sample_size` keyword argument to your `*.rinex.get_URLs_within` function call. For example:
+It can take a long time to get hundreds of thousands of URLs. Random sampling and statistics can mitigate the need to get data every URL. To get a random sample of URLs within a certain range, just add the `sample_size` keyword argument to your `*.rinex.get_URLs_within` function call. You must also specify the type of sampling to be done. For example:
 
 ```
 start_date = datetime.date(2015, 10, 12)
 end_date   = datetime.date(2014, 10, 12)
-dates = gpsbro.unavco.rinex.get_URLs_within(start_date, end_date, mask, sample_size=35)
+dates = gpsbro.unavco.rinex.get_URLs_within(start_date, end_date, mask, sample_size=35, sample_type="DAY")
 
 # sample_size=35: randomly choose 35 days and only get URLs for those days
 
@@ -127,6 +129,8 @@ for date in dates:
     dZ_files = [dZ for mZ, dZ, qc in dates[date]]   # list of observational  -- *d.Z URLs
     qc_files = [qc for mZ, dZ, qc in dates[date]]   # list of *.qc URLs
 ```
+
+Currently the only sampling type is `"DAY"` which represents radnomly choosing `sample_size` days from a range of days, and including all URLs from those days in the returned dictionary. However, this method of sampling may not accurately represent a population of URLs due to selection bias. I am working on adding two more types of random sampling. 
 
 # Latitude/Longitude Bounding
 
@@ -141,8 +145,6 @@ for date in dates:
     dZ_files = [dZ for mZ, dZ, qc in dates[date] if dZ is not None]
     qc_files = [qc for mZ, dZ, qc in dates[date] if qc is not None]
 ```
-
-Notice that not all dates have file of each type (mZ, dZ, and qc). If a certain date does not have a URL for a certain filetype, it will contain `None` in place of the URL. It may be useful to filter out such instances of `None` as shown in the example above.
 
 # License and Redistribution
 
