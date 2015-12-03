@@ -3,7 +3,7 @@ import random
 import datetime
 
 import requests
-import urllib.request
+import urllib
 from xml.etree import ElementTree
 
 from gpsbro.sonel import zones
@@ -37,22 +37,23 @@ def get_URLs_on(date, mask=None):
         filters.append("qc/")
     for f in filters:
         URL = BASE_URL
-        with urllib.request.urlopen(URL + date_url) as response:
-            data = response.read().decode("utf-8")
-            for line in data.split("\n"):
-                if not line.strip().split():
-                    continue
-                string = line.strip().split()[-1]
-                if len(string) > 3:
-                    # hashtag robust
-                    if string[-3:] == "m.Z":
-                        mZ.append(URL + date_url + string)
-                    elif string[-3:] == "n.Z":
-                        nZ.append(URL + date_url + string)
-                    elif string[-3:] == "d.Z":
-                        dZ.append(URL + date_url + string)
-                    elif string[-3:] == ".qc":
-                        qc.append(URL + date_url + string)
+        sock = urllib.urlopen(URL + date_url)
+        data = sock.read()
+        sock.close()
+        for line in data.split("\n"):
+            if not line.strip().split():
+                continue
+            string = line.strip().split()[-1]
+            if len(string) > 3:
+                # hashtag robust
+                if string[-3:] == "m.Z":
+                    mZ.append(URL + date_url + string)
+                elif string[-3:] == "n.Z":
+                    nZ.append(URL + date_url + string)
+                elif string[-3:] == "d.Z":
+                    dZ.append(URL + date_url + string)
+                elif string[-3:] == ".qc":
+                    qc.append(URL + date_url + string)
     maximum_len = max(len(mZ), len(nZ), len(dZ), len(qc))
     mZ.extend([None]*(maximum_len - len(mZ)))
     nZ.extend([None]*(maximum_len - len(nZ)))
