@@ -1,3 +1,10 @@
 body {
     background-color: #FFFFFF;
+    text-align: center;
+    max-width: 750px;
+    min-width: 300px;
+}
+
+h1 {
+    size: 48px;
 }

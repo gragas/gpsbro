@@ -10,6 +10,17 @@
     <!-- <script src="script.js"></script> -->
   </head>
   <body>
-    Hello, World!
+    <h1>Fullstack Demo</h1>
+    <script>
+      function go_to_site() {
+          var site_id = document.getElementById("site_id_input").value;
+          var url_base = "default_network/";
+          var url = url_base.concat(site_id);
+          document.location.href = url;
+      }
+    </script>
+    Enter a site ID: <input type="text" id="site_id_input"><br>
+    <button onclick="go_to_site()">Submit</button>
+    </form>
   </body>
 </html>
